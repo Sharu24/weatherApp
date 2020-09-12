@@ -7,15 +7,23 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-/* #map {
-  /* position: relative;
-  height: 50%;
-  width: 50%;
-  z-index: 2; 
-  position: unset;
-  height: 200px;
-  width: 200px;
-} */
+@keyframes animatedBackground {
+  from {
+    /* background-size: cover; */
+    background-position: 50% 22%;
+  }
+  to {
+    /* background-size: cover; */
+    background-position: 100% 22%;
+  }
+}
+
+.animateBg {
+  /* background-image: url("./images/weather2.jpeg"); */
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+  animation: animatedBackground 60s linear infinite alternate;
+}
 
 #background {
   width: 100vw;
@@ -27,121 +35,110 @@ body {
   opacity: 0.8;
 }
 
-.stretch {
-  width: 100%;
-  height: 100%;
+#wContainer {
+  width: 90vw;
 }
 
 h1 {
-  margin: 2rem;
+  margin-top: 2rem;
+  font-size: 2.725rem;
   text-align: center;
-  font-size: 4rem;
   color: rgb(117, 83, 83);
-  text-shadow: 1px 2px 3px rgb(0, 0, 0), 1px -2px 3px rgb(255, 255, 255);
+  text-shadow: 1px 1px 1px rgb(102, 102, 102), -1px -1px 1px rgb(179, 179, 179);
   mix-blend-mode: difference;
   position: relative;
   z-index: -1;
 }
 
-.formElement {
-  margin: 0 auto;
-  margin-top: 2rem;
-  color: rgb(49, 44, 44);
-  /* mix-blend-mode: difference; */
-}
-
 #cityName {
+  margin-top: 1.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  padding: 0.15rem 1.125rem;
   display: block;
-  margin: 0 auto;
   text-align: center;
-  padding: 0.25rem 2.125rem;
   background: #a7a7a7;
   border: 1px solid grey;
   border-radius: 4px;
   font-family: "Montserrat", sans-serif;
-  font-size: 2rem;
-  letter-spacing: 2px;
   outline: none;
   border: none;
   /* mix-blend-mode: darken; */
   opacity: 0.8;
+  transition: all 0.6s ease-out;
 }
 
 #cityName::placeholder {
   color: #3a3a3a;
 }
 
-#getWeatherBtn {
-  display: block;
-  margin: 2rem auto;
-  padding: 0.35rem 5.125rem;
-  background-image: linear-gradient(
-    to right,
-    #3a3a3a 0%,
-    #acacac 25%,
-    #c4c4c4 51%,
-    #acacac 75%,
-    #353535 100%
-  );
-  color: #080808;
-  /* text-shadow: 6px 8px 10px #ffffff, -16px -16px 10px #ffffff; */
-  font-size: 2rem;
+input[type="submit"] {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
   border-radius: 4px;
   letter-spacing: 1px;
+  padding: 0.4rem 4rem;
+  display: block;
+  background-image: linear-gradient(to right, #4d4d4d 0%, #4d4d4d 100%);
+  mix-blend-mode: hard-light;
+  color: #cacaca;
+  text-shadow: 1px 2px 1px #283333, -2px -1px 1px #232c2c;
   outline: none;
-  mix-blend-mode: darken;
+  border: 1px solid #444444;
+  transition: all 0.6s ease-out;
 }
 
-#getWeatherBtn::hover {
-  background-position: left center;
+input[type="submit"]:active {
+  background-image: linear-gradient(to right, #acacac 0%, #acacac 100%);
+  color: #283333;
+  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
+  transform: scale(0.9);
 }
 
 #output {
+  margin-top: 1.2rem;
+  max-width: 100%;
+  padding: 0.6rem 0.4rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 0 auto;
-  max-width: 440px;
   color: rgb(37, 37, 37);
   border: none;
   border-radius: 10px;
-  padding: 1.25rem 2.25rem;
+  transition: all 0.6s ease-out;
 }
 
-/* background: rgba(197, 197, 197, 0.7); */
-/* mix-blend-mode: difference; */
+#output > p {
+  padding: 1.2px;
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: bolder;
+  text-transform: capitalize;
+  text-shadow: 1px 2px 3px rgb(201, 201, 201), 1px -2px 3px rgb(173, 173, 173);
+}
 
 #output > p.temp {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 #output > div.line {
-  margin: 0.8rem auto;
+  margin: 0.6rem auto;
   border: 5px dotted grey;
-  width: 2rem;
+  width: 1.6rem;
   border-bottom: none;
 }
 
 #output > div#showMap {
   margin: 0.8rem auto;
   overflow: hidden;
-  /* position: absolute; */
-  /* z-index: 1;  */
-  height: 200px;
-  width: 300px;
+  height: 100px;
+  width: 220px;
   align-self: center;
-}
-
-#output > p {
-  padding: 2px;
-  /* border: 1px solid grey; */
-  text-align: center;
-  /* width: 100%; */
-  font-size: 1.4rem;
-  font-weight: bolder;
-  text-transform: capitalize;
-  text-shadow: 1px 2px 3px rgb(201, 201, 201), 1px -2px 3px rgb(173, 173, 173);
+  border: 1px dotted rgb(76, 227, 253);
+  border-radius: 4px;
+  opacity: 0.6;
+  transition: all 0.6s ease-out;
 }
 
 #output > p.description {
@@ -156,12 +153,82 @@ h1 {
   width: 100%;
 }
 #output > div.details img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border: none;
   outline: none;
   align-self: flex-end;
+  transition: all 0.6s ease-out;
 }
+
+#output > div.details img:hover {
+  transform: scale(1.2);
+}
+
 #output > div.details div.detailsText {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  align-items: left;
+  transition: all 0.6s ease-out;
+}
+
+#output > div.details div.detailsText:hover {
+  transform: scale(1.2);
+}
+
+@media screen and (min-width: 340px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  #cityName {
+    margin-top: 1.4rem;
+    font-size: 1.6rem;
+    padding: 0.15rem 1.225rem;
+    width: 100%;
+  }
+
+  input[type="submit"] {
+    margin-top: 1.2rem;
+    font-size: 1.6rem;
+    padding: 0.4rem 5rem;
+    width: 100%;
+  }
+  #output {
+    margin-top: 1.2rem;
+    max-width: 100%;
+  }
+
+  #output > div#showMap {
+    height: 100px;
+    width: 80vw;
+  }
+}
+
+@media screen and (min-width: 720px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  #cityName {
+    margin-top: 1.4rem;
+    font-size: 1.6rem;
+    padding: 0.15rem 1.225rem;
+    width: 50%;
+  }
+
+  input[type="submit"] {
+    margin-top: 1.2rem;
+    font-size: 1.6rem;
+    padding: 0.4rem 5rem;
+    width: 50%;
+  }
+  #output {
+    margin-top: 1.2rem;
+    max-width: 50%;
+  }
+
+  #output > div#showMap {
+    height: 100px;
+    width: 95%;
+  }
 }
