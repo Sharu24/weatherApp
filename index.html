@@ -4,17 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- https://maps.googleapis.com/maps/api/geocode/json?latlng=${SEARCHING_lat},${SEARCHING_long}&key=${YOUR_GOOGLE_API_KEY} -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=McLaren&display=swap"
+      rel="stylesheet"
+    />
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
       integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
       crossorigin="anonymous"
     ></script>
-    <!-- https://maps.googleapis.com/maps/api/geocode/json?latlng=${SEARCHING_lat},${SEARCHING_long}&key=${YOUR_GOOGLE_API_KEY} -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLiRARSvus-dp7-kMXYMXSpPh09mjXGGE"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLiRARSvus-dp7-kMXYMXSpPh09mjXGGE"></script> -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
       rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
     />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
     <link rel="stylesheet" href="./styles.css" />
     <title>Weather App</title>
   </head>
@@ -22,14 +40,16 @@
     <div id="background"></div>
     <center>
       <div id="wContainer">
-        <h1>Weather</h1>
+        <div class="heading">
+          <h1>Weather</h1>
+        </div>
         <input
           type="text"
           id="cityName"
           placeholder="Enter City Name"
           autocomplete="off"
         />
-        <input type="submit" id="getWeatherBtn" value="Get Weather" />
+        <input type="submit" id="getWeatherBtn" value="Click Me !" />
         <div id="output" class="out">
           <p class="city"></p>
           <div class="line"></div>
@@ -44,100 +64,110 @@
           <p class="description"></p>
           <div class="line"></div>
           <p class="latLong"></p>
-          <div id="showMap"></div>
+          <div id="map" class="map"></div>
         </div>
       </div>
     </center>
-  </body>
-  <script>
-    var body = document.querySelector("body");
-    var cityName = document.querySelector("#cityName");
-    var getWeatherBtn = document.querySelector("#getWeatherBtn");
-    var output = document.querySelector("#output");
-    var bImgCon = document.querySelector("#background");
-    // var bImg = document.createElement("img");
+    <script>
+      var body = document.querySelector("body");
+      var cityName = document.querySelector("#cityName");
+      var getWeatherBtn = document.querySelector("#getWeatherBtn");
+      var output = document.querySelector("#output");
+      var bImgCon = document.querySelector("#background");
 
-    var onload = () => {
-      output.style.display = "none";
-      bImgCon.style = "background-image: url('./images/weather2.jpeg')";
-      bImgCon.classList.add("animateBg");
-    };
+      var mymap = L.map("map").setView([0, 0], 8);
+      L.tileLayer(
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+        {
+          maxZoom: 18,
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          id: "mapbox/streets-v11",
+          tileSize: 512,
+          zoomOffset: -1
+        }
+      ).addTo(mymap);
 
-    var getWeatherData = cityName => {
-      const apiKey = "b3ddff3ed6d7680c73f7f66c51c30928";
-      const baseUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
-      var apiUrl = `${baseUrl}${cityName}&appid=${apiKey}`;
-      return axios.get(apiUrl);
-    };
+      mymap.locate({ setView: true, maxZoom: 8 });
 
-    function plotMap(lon, lat) {
-      console.log(lon, lat);
-      var latLong = { lat: lon, lng: lat };
-      var mapOptions = {
-        center: latLong,
-        zoom: 4
-      };
-      // console.log(mapOptions);
-      var map = new google.maps.Map(
-        document.getElementById("showMap"),
-        mapOptions
-      );
-      var marker = new google.maps.Marker({
-        position: latLong,
-        map: map,
-        label: latLong.lat + "," + latLong.lng
-      });
-    }
-
-    function getWeather(cityName) {
-      var setEle = (ele, val) => {
-        document.querySelector("." + ele).innerHTML = val;
+      var onload = () => {
+        output.style.display = "none";
+        bImgCon.style.transition = "background-image 0.6s ease-in-out";
+        bImgCon.style = "background-image: url('./images/home6.jpeg')";
+        bImgCon.classList.add("animateBg");
       };
 
-      getWeatherData(cityName)
-        .then(response => {
-          output.style.display = "block";
-          output.style.backgroundColor = "rgba(197, 197, 197, 0.7)";
+      var getWeatherData = cityName => {
+        const apiKey = "b3ddff3ed6d7680c73f7f66c51c30928";
+        const baseUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
 
-          // console.log(response.data);
+        var apiUrl = `${baseUrl}${cityName}&appid=${apiKey}`;
+        return axios.get(apiUrl);
+      };
 
-          var apiData = response.data;
-          var wCity = `${apiData.name} ( ${apiData.sys.country} )`;
-          var wMain = apiData.weather[0].main.toLowerCase();
-          var wDesc = apiData.weather[0].description;
-          var wTemp = ((apiData.main.temp - 273.15) | 0) + `&deg; Celsius`;
-          var wfeels = ((apiData.main.feels_like - 273.15) | 0) + `&deg; C`;
-          var wHum = apiData.main.humidity;
-          var wIcon = `http://openweathermap.org/img/w/${apiData.weather[0].icon}.png`;
-          bImgCon.style = `background-image: url('./images/${wMain}.jpeg')`;
-          bImgCon.classList.add("animateBg");
-          setEle("city", wCity);
-          setEle("temp", wTemp);
-          setEle("feelsLike", `feels like ${wfeels}`);
-          setEle("humidity", `humidity ~ ${wHum}%`);
-          setEle("description", wDesc);
-          document.querySelector(".icon").src = wIcon;
-          plotMap(apiData.coord.lon, apiData.coord.lat);
-        })
-        .catch(error => {
-          var wErr = error.response.data.message;
-          alert(wErr + ": Please Enter a Valid City Name");
-          location.reload();
-        });
-    }
+      var plotMap = (lon, lat) => mymap.panTo(new L.LatLng(lat, lon));
 
-    var reset = () => {
-      cityName.value = "";
-      cityName.focus();
-    };
+      function getWeather(cityName) {
+        var setEle = (ele, val) => {
+          document.querySelector("." + ele).innerHTML = val;
+        };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      onload();
-      reset();
-      getWeatherBtn.addEventListener("click", () => {
-        getWeather(cityName.value);
+        getWeatherData(cityName)
+          .then(response => {
+            output.style.display = "block";
+            output.style.backgroundColor = "rgba(197, 197, 197, 0.7)";
+
+            // console.log(response.data);
+
+            var apiData = response.data;
+            var wCity = `${apiData.name} ( ${apiData.sys.country} )`;
+            var wMain = apiData.weather[0].main.toLowerCase();
+            var wDesc = apiData.weather[0].description;
+            var wTemp = ((apiData.main.temp - 273.15) | 0) + `&deg; Celsius`;
+            var wfeels = ((apiData.main.feels_like - 273.15) | 0) + `&deg; C`;
+            var wHum = apiData.main.humidity;
+            console.log(wMain);
+            var wIcon = `http://openweathermap.org/img/w/${apiData.weather[0].icon}.png`;
+            bImgCon.style = `background-image: url('./images/${wMain}.jpeg')`;
+            bImgCon.classList.add("animateBg");
+            setEle("city", wCity);
+            setEle("temp", wTemp);
+            setEle("feelsLike", `feels like ${wfeels}`);
+            setEle("humidity", `humidity ~ ${wHum}%`);
+            setEle("description", wDesc);
+            document.querySelector(".icon").src = wIcon;
+            plotMap(apiData.coord.lon, apiData.coord.lat);
+          })
+          .catch(error => {
+            var wErr = error.response.data.message;
+            var cName = document.getElementById("cityName");
+            cName.placeholder = "Enter a Valid Name ";
+            //alert(wErr + ": Please Enter a Valid City Name");
+
+            cName.classList.add("ph-red");
+            setTimeout(() => {
+              cName.classList.remove("ph-red");
+              cName.placeholder = "Enter City Name";
+            }, 500);
+            cityName.value = "";
+          });
+      }
+
+      var reset = () => {
+        cityName.value = "";
+        cityName.focus();
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        onload();
         reset();
+        getWeatherBtn.addEventListener("click", () => {
+          getWeather(cityName.value);
+          reset();
+        });
       });
-    });
-  </script>
+    </script>
+  </body>
 </html>

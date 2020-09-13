@@ -4,22 +4,20 @@
   box-sizing: border-box;
 }
 body {
-  font-family: "Montserrat", sans-serif;
+  /* font-family: "Montserrat", sans-serif; */
+  font-family: "McLaren", cursive;
 }
 
 @keyframes animatedBackground {
   from {
-    /* background-size: cover; */
     background-position: 50% 22%;
   }
   to {
-    /* background-size: cover; */
     background-position: 100% 22%;
   }
 }
 
 .animateBg {
-  /* background-image: url("./images/weather2.jpeg"); */
   background-position: 0px 0px;
   background-repeat: repeat-x;
   animation: animatedBackground 60s linear infinite alternate;
@@ -29,10 +27,15 @@ body {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
   z-index: -2;
-  opacity: 0.8;
+  background-color: #8d8d8d;
+  opacity: 0.6;
+  /* transition: all 0.6 ease-in-out; */
+  transition: background-image 0.6s ease-in-out;
 }
 
 #wContainer {
@@ -43,11 +46,12 @@ h1 {
   margin-top: 2rem;
   font-size: 2.725rem;
   text-align: center;
-  color: rgb(117, 83, 83);
-  text-shadow: 1px 1px 1px rgb(102, 102, 102), -1px -1px 1px rgb(179, 179, 179);
+  color: rgb(97, 66, 66);
+  text-shadow: 1px 1px 1px rgb(102, 102, 102), -1px -1px 1px rgb(136, 135, 135);
   mix-blend-mode: difference;
   position: relative;
   z-index: -1;
+  transition: all 0.6 ease-in-out;
 }
 
 #cityName {
@@ -57,35 +61,57 @@ h1 {
   padding: 0.15rem 1.125rem;
   display: block;
   text-align: center;
-  background: #a7a7a7;
+  background: #2b2b2b;
+  color: #cacaca;
   border: 1px solid grey;
-  border-radius: 4px;
-  font-family: "Montserrat", sans-serif;
+  border-radius: 0.5rem;
   outline: none;
   border: none;
   /* mix-blend-mode: darken; */
   opacity: 0.8;
   transition: all 0.6s ease-out;
+  font-family: "McLaren", cursive;
+}
+
+#cityName:hover {
+  background: #2b2b2b;
+}
+
+#cityName:focus {
+  background: #2b2b2b;
 }
 
 #cityName::placeholder {
-  color: #3a3a3a;
+  color: #b6b6b6;
+  background: #2b2b2b;
+}
+
+#cityName.ph-red::-webkit-input-placeholder {
+  color: #ff4343;
 }
 
 input[type="submit"] {
   margin-top: 1.2rem;
   font-size: 1.2rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   letter-spacing: 1px;
   padding: 0.4rem 4rem;
   display: block;
   background-image: linear-gradient(to right, #4d4d4d 0%, #4d4d4d 100%);
   mix-blend-mode: hard-light;
+  font-family: "McLaren", cursive;
+  text-transform: unset;
   color: #cacaca;
   text-shadow: 1px 2px 1px #283333, -2px -1px 1px #232c2c;
   outline: none;
   border: 1px solid #444444;
   transition: all 0.6s ease-out;
+}
+
+input[type="submit"]:hover {
+  background-image: linear-gradient(to right, #acacac 0%, #acacac 100%);
+  color: #283333;
+  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
 }
 
 input[type="submit"]:active {
@@ -109,13 +135,17 @@ input[type="submit"]:active {
   transition: all 0.6s ease-out;
 }
 
+#output:hover {
+  transform: scaleX(1.02);
+}
+
 #output > p {
   padding: 1.2px;
   font-size: 1.4rem;
   text-align: center;
   font-weight: bolder;
   text-transform: capitalize;
-  text-shadow: 1px 2px 3px rgb(201, 201, 201), 1px -2px 3px rgb(173, 173, 173);
+  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
 }
 
 #output > p.temp {
@@ -127,18 +157,6 @@ input[type="submit"]:active {
   border: 5px dotted grey;
   width: 1.6rem;
   border-bottom: none;
-}
-
-#output > div#showMap {
-  margin: 0.8rem auto;
-  overflow: hidden;
-  height: 100px;
-  width: 220px;
-  align-self: center;
-  border: 1px dotted rgb(76, 227, 253);
-  border-radius: 4px;
-  opacity: 0.6;
-  transition: all 0.6s ease-out;
 }
 
 #output > p.description {
@@ -175,6 +193,21 @@ input[type="submit"]:active {
   transform: scale(1.2);
 }
 
+#output > div.map {
+  margin: 0.8rem auto;
+  overflow: hidden;
+  height: 180px;
+  width: 220px;
+  align-self: center;
+  border: 1px dotted rgb(76, 227, 253);
+  border-radius: 4px;
+  opacity: 0.6;
+  transition: all 0.6s ease-out;
+}
+
+/* --------------------------------------------------------------------------*/
+/* When Screen Width >= 340 px */
+/* --------------------------------------------------------------------------*/
 @media screen and (min-width: 340px) {
   h1 {
     font-size: 3rem;
@@ -198,12 +231,14 @@ input[type="submit"]:active {
     max-width: 100%;
   }
 
-  #output > div#showMap {
+  #output > div.map {
     height: 100px;
-    width: 80vw;
+    width: 90%;
   }
 }
-
+/* --------------------------------------------------------------------------*/
+/* When Screen Width >= 720 px */
+/* --------------------------------------------------------------------------*/
 @media screen and (min-width: 720px) {
   h1 {
     font-size: 3rem;
@@ -227,8 +262,9 @@ input[type="submit"]:active {
     max-width: 50%;
   }
 
-  #output > div#showMap {
+  #output > div.map {
+    margin: 0 auto;
     height: 100px;
-    width: 95%;
+    width: 90%;
   }
 }
