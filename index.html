@@ -37,7 +37,9 @@
     <title>Weather App</title>
   </head>
   <body>
-    <div id="background"></div>
+    <div id="background">
+      <div class="layer"></div>
+    </div>
     <center>
       <div id="wContainer">
         <div class="heading">
@@ -117,7 +119,8 @@
         getWeatherData(cityName)
           .then(response => {
             output.style.display = "block";
-            output.style.backgroundColor = "rgba(197, 197, 197, 0.7)";
+            output.classList.add("output-bg");
+            // output.style.backgroundColor = "rgb(170, 170, 170, 0.7)";
 
             // console.log(response.data);
 

@@ -3,8 +3,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --main-bg-color: #2c2c2c;
+  --main-text-color: #dbdbdb;
+  --main-btn-bg-color: #aaaaaa;
+  --main-btn-text-color: #363636;
+  --bg-overlay: rgba(8, 8, 8, 0.7);
+}
+
 body {
-  /* font-family: "Montserrat", sans-serif; */
   font-family: "McLaren", cursive;
 }
 
@@ -32,10 +40,16 @@ body {
   min-width: 100%;
   min-height: 100%;
   z-index: -2;
-  background-color: #8d8d8d;
-  opacity: 0.6;
-  /* transition: all 0.6 ease-in-out; */
   transition: background-image 0.6s ease-in-out;
+}
+
+.layer {
+  background-color: var(--bg-overlay);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #wContainer {
@@ -46,8 +60,8 @@ h1 {
   margin-top: 2rem;
   font-size: 2.725rem;
   text-align: center;
-  color: rgb(97, 66, 66);
-  text-shadow: 1px 1px 1px rgb(102, 102, 102), -1px -1px 1px rgb(136, 135, 135);
+  color: var(--main-text-color);
+  text-shadow: 2px 1px 1px rgb(102, 102, 102), -2px -0px 1px rgb(136, 135, 135);
   mix-blend-mode: difference;
   position: relative;
   z-index: -1;
@@ -61,9 +75,8 @@ h1 {
   padding: 0.15rem 1.125rem;
   display: block;
   text-align: center;
-  background: #2b2b2b;
-  color: #cacaca;
-  border: 1px solid grey;
+  background: var(--main-bg-color);
+  color: var(--main-text-color);
   border-radius: 0.5rem;
   outline: none;
   border: none;
@@ -74,20 +87,20 @@ h1 {
 }
 
 #cityName:hover {
-  background: #2b2b2b;
+  background: var(--main-bg-color);
 }
 
 #cityName:focus {
-  background: #2b2b2b;
+  background: var(--main-bg-color);
 }
 
 #cityName::placeholder {
-  color: #b6b6b6;
-  background: #2b2b2b;
+  color: var(--main-text-color);
+  background: var(--main-bg-color);
 }
 
 #cityName.ph-red::-webkit-input-placeholder {
-  color: #ff4343;
+  color: #f30000;
 }
 
 input[type="submit"] {
@@ -97,27 +110,31 @@ input[type="submit"] {
   letter-spacing: 1px;
   padding: 0.4rem 4rem;
   display: block;
-  background-image: linear-gradient(to right, #4d4d4d 0%, #4d4d4d 100%);
+  background-image: linear-gradient(
+    to right,
+    var(--main-btn-bg-color) 0%,
+    var(--main-btn-bg-color) 100%
+  );
   mix-blend-mode: hard-light;
   font-family: "McLaren", cursive;
   text-transform: unset;
-  color: #cacaca;
-  text-shadow: 1px 2px 1px #283333, -2px -1px 1px #232c2c;
+  color: var(--main-btn-text-color);
+  /* text-shadow: 1px 2px 1px #283333, -2px -1px 1px #232c2c; */
   outline: none;
   border: 1px solid #444444;
   transition: all 0.6s ease-out;
 }
 
 input[type="submit"]:hover {
-  background-image: linear-gradient(to right, #acacac 0%, #acacac 100%);
+  background-image: linear-gradient(to right, #cacaca 0%, #cacaca 100%);
   color: #283333;
-  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
+  text-shadow: 1px 2px 1px #cacaca, -2px -1px 1px #cacaca;
 }
 
 input[type="submit"]:active {
-  background-image: linear-gradient(to right, #acacac 0%, #acacac 100%);
+  background-image: linear-gradient(to right, #cacaca 0%, #cacaca 100%);
   color: #283333;
-  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
+  text-shadow: 1px 2px 1px #cacaca, -2px -1px 1px #cacaca;
   transform: scale(0.9);
 }
 
@@ -133,6 +150,17 @@ input[type="submit"]:active {
   border: none;
   border-radius: 10px;
   transition: all 0.6s ease-out;
+  box-shadow: 4px 5px 2px #2c2c2c, -4px 5px 2px #2c2c2c, 4px -5px 2px #2c2c2c,
+    -4px -5px 2px #2c2c2c;
+}
+
+.output-bg {
+  background-color: var(--main-bg-color);
+  opacity: 0.7;
+}
+
+.output-none {
+  display: none;
 }
 
 #output:hover {
@@ -145,7 +173,8 @@ input[type="submit"]:active {
   text-align: center;
   font-weight: bolder;
   text-transform: capitalize;
-  text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac;
+  color: var(--main-text-color);
+  /* text-shadow: 1px 2px 1px #acacac, -2px -1px 1px #acacac; */
 }
 
 #output > p.temp {
@@ -165,6 +194,7 @@ input[type="submit"]:active {
 
 #output div.details {
   display: flex;
+  color: var(--main-text-color);
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
@@ -248,18 +278,22 @@ input[type="submit"]:active {
     margin-top: 1.4rem;
     font-size: 1.6rem;
     padding: 0.15rem 1.225rem;
-    width: 50%;
+    width: 90%;
+    max-width: 792px;
   }
 
   input[type="submit"] {
     margin-top: 1.2rem;
     font-size: 1.6rem;
     padding: 0.4rem 5rem;
-    width: 50%;
+    width: 90%;
+    max-width: 792px;
   }
   #output {
     margin-top: 1.2rem;
-    max-width: 50%;
+    max-width: 90%;
+    max-width: 792px;
+    padding-bottom: 2rem;
   }
 
   #output > div.map {
